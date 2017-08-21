@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- PrimeFaces -->
+<h:head>
+	<!--<link
+		href="${facesContext.externalContext.requestContextPath}/css/default.css"
+		rel="stylesheet" type="text/css" />
+-->
+
+</h:head>
+<h:body>
+
+	<pe:blockUI widgetVar="blockUIWidget">
+			<div align="center">
+				<p:outputLabel value="Procesando..."
+						id="id_transaccion_encab2" />
+					<h:graphicImage value="/images/gif/ajaxloadingbar.gif"
+						width="200" />
+			</div>
+		</pe:blockUI>
+
+	<p:layout fullPage="true">
+
+<p:layoutUnit position="north" size="auto">
+
+			<h:form>
+				<p:panelGrid style="width:auto;border:none;" >
+					<p:row>
+						<p:column style="width:auto;">
+							<p:outputLabel value="Usuario:" style="color:blue" />
+						</p:column>
+
+						<p:column style="width:auto;">
+						<p:outputLabel value="#{loginMB.mainuser.nombre} #{loginMB.mainuser.apellido}" style="color:green" />
+					
+					</p:column>
+
+						<p:column  style="width:auto;">
+							<p:clock pattern="HH:mm:ss dd/MM/yyyy" mode="server" />
+						</p:column>
+						<p:column id="cierreSesion" style="width:auto;">
+							<p:commandButton value="Cerrar Sesion"
+								process=":#{p:component('cierreSesion')}" partialSubmit="true"
+								actionListener="#{loginMB.logout}" />
+						</p:column>
+						
+					</p:row>
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+			</h:form>
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="west" resizable="false">
+
+			<h:form id="menuForm">
+			<h:panelGroup id="menu-content">
+				<p:menu model="#{menuMB.model}" style="width:250px" />
+			</h:panelGroup>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+
+			<h:panelGroup id="main-content">
+				<ui:include src="#{menuMB.pageName}" />
+			</h:panelGroup>
+
+
+		</p:layoutUnit>
+	</p:layout>
+
+</h:body>
+
+</html>

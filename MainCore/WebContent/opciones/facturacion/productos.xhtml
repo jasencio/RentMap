@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> <!-- PrimeFaces -->
+<h:head></h:head> 
+
+<h:body>
+<h:form>
+			<p:growl id="messages" showDetail="true" sticky="true"></p:growl>
+			<p:dataTable editable="true" id="productosTable" var="producto"
+					value="#{productosMB.productoList}" rendered="true" rows="7"
+					paginator="true" style="margin-bottom:20px"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="top">
+
+					<f:facet name="header">Administración de Productos</f:facet>
+
+					<p:ajax event="rowEdit" listener="#{productosMB.onRowEditProducto}"
+						update=":#{p:component('productosTable')}" process=":#{p:component('productosTable')}" partialSubmit="true" />
+
+					<p:column headerText="NOMBRE">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{producto.nombre}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{producto.nombre}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="PRECIO">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{producto.precio}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{producto.precio}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+
+					</p:column>
+
+					<p:column headerText="STOCK">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{producto.stock}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{producto.stock}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					<p:column headerText="ESTADO">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{producto.estado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{producto.estado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column >
+						<p:rowEditor />
+					</p:column>
+
+
+
+				</p:dataTable>
+	
+				<p:commandButton value="Ingreso de Productos" type="button" onclick="PF('dlgProductosW').show();" />
+				
+				
+				
+				
+			    <p:dialog id="dlgProductos" 
+						  widgetVar="dlgProductosW" appendTo="@(body)"
+						  resizable="false" modal="true"
+						  header="Ingreso de Productos">
+
+			<p:panelGrid id="panelProductos">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="NOMBRE" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{productosMB.producto.nombre}"  />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="PRECIO" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{productosMB.producto.precio}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Estado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{productosMB.producto.estado}" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{productosMB.guardarProducto}"
+							oncomplete="PF('dlgProductosW').hide();"  
+							update=":#{p:component('productosTable')} :#{p:component('messages')} :#{p:component('panelProductos')}"  process=":#{p:component('panelProductos')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</p:dialog>
+				
+				
+				</h:form>
+
+</h:body>
+
+</html>
+

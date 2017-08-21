@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<!-- PrimeFaces -->
+<h:head></h:head>
+
+<h:body>
+		<h:form id="formRecepcion">
+
+			<p:growl id="messages" showDetail="true" sticky="true"></p:growl>
+
+
+			<h1>Mi Inventario</h1>
+
+
+			<p:dataTable id="expedientesTable" var="regExp"
+				currentPageReportTemplate="true" value="#{inventarioMB.expBoxList}"
+				rows="10" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" paginatorPosition="top"
+				rowKey="#{regExp.numProceso}"
+				filteredValue="#{inventarioMB.filteredExpBox}">
+				<f:facet name="header">Expedientes Enviados</f:facet>					
+	           	
+	           	<p:column width="3%" style="text-align:left">
+	           			<f:facet name="header">
+	           				<p:selectBooleanCheckbox value="#{inventarioMB.allSelected}" style="width:4px; heigh:4px;" >
+		       					<p:ajax listener="#{inventarioMB.Select}" 
+		       							process=":#{p:component('expedientesTable')}" 
+		       							update=":#{p:component('expedientesTable')}"  
+		       							partialSubmit="true"/>
+	           				</p:selectBooleanCheckbox>
+	           			</f:facet>
+	           		<p:selectBooleanCheckbox value="#{regExp.selected}" style="width:4px; heigh:4px;" >
+	       						<p:ajax listener="#{inventarioMB.OneSelect}" 
+		       							process=":#{p:component('expedientesTable')}" 
+		       							update=":#{p:component('expedientesTable')}"  
+		       							partialSubmit="true"/>	
+		       		</p:selectBooleanCheckbox>  
+	           	</p:column>
+	           		
+
+				<p:column  sortBy="#{regExp.judicatura}" style="width:7%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Judicatura" />
+					</f:facet>
+					<p:outputLabel value="#{regExp.judicatura}" />
+				</p:column>
+				
+				<p:column sortBy="#{regExp.anio}" style="width:7%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Año" />
+					</f:facet>
+					<p:outputLabel value="#{regExp.anio}" />
+				</p:column>
+				
+				<p:column filterBy="#{regExp.numExpediente}"
+					filterMatchMode="contains" sortBy="#{regExp.numExpediente}" style="width:7%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Numero Expediente" />
+					</f:facet>
+					<h:outputLabel value="#{regExp.numExpediente}" />
+				</p:column>
+				
+				<p:column  style="width:10%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Tipo" />
+					</f:facet>
+					<h:outputLabel value="#{regExp.requerimiento01}" />
+				</p:column>
+				
+				<p:column sortBy="#{regExp.numeroCuerpos}" style="width:10%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Numero Cuerpos" />
+					</f:facet>
+					<p:outputLabel value="#{regExp.numeroCuerpos}" />
+				</p:column>
+				
+				<p:column  style="width:10%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Observacion" />
+					</f:facet>
+					<h:outputLabel value="#{regExp.requerimiento02}" />
+				</p:column>
+				<p:column sortBy="#{regExp.remitente}" style="width:15%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Remitente" />
+					</f:facet>
+					<p:outputLabel value="#{regExp.remitente}" />
+				</p:column>
+				
+				<p:column sortBy="#{regExp.fechaEnvio}" style="width:20%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Fecha Envio"/>
+					</f:facet>
+					<p:outputLabel value="#{regExp.fechaEnvio}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"  timeZone="EST"/>
+					</p:outputLabel>
+				</p:column>
+
+				<p:column sortBy="#{regExp.fechaRecepcion}" style="width:20%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Fecha Aceptación" />
+					</f:facet>
+					<p:outputLabel value="#{regExp.fechaRecepcion}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="EST" /></p:outputLabel>
+					
+				</p:column>
+
+				<h:commandLink>
+					<p:commandButton value="Exportar"></p:commandButton>
+					<p:dataExporter type="xls" target="expedientesTable"
+						fileName="Inventario" />
+				</h:commandLink>
+
+			</p:dataTable>
+
+
+			<h:panelGrid columns="1">
+
+
+				<h:panelGroup>
+					<p:panelGrid id="pnlEnvio" columns="2">
+						<f:facet name="header">Destinatario</f:facet>
+						<p:outputLabel value="Cargo" />
+						<h:selectOneMenu id="cmbRoles" value="#{inventarioMB.selectRoles}"
+							disabled="#{inventarioMB.blockCargo}" effect="fade"
+							var="selectRol">
+							<f:selectItem itemLabel="Seleccione un Cargo" />
+							<f:selectItems value="#{inventarioMB.listaRoles}" var="listRol"
+								itemLabel="#{listRol.descripcion}" itemValue="#{listRol.idRol}" />
+							<p:ajax
+								update=":formRecepcion:cmbUsuarios,:formRecepcion:cmbRoles"
+								partialSubmit="true" listener="#{inventarioMB.ListaUsuarios}" />
+						</h:selectOneMenu>
+
+
+
+						<p:outputLabel value="Destinatario" />
+						<h:selectOneMenu id="cmbUsuarios"
+							value="#{inventarioMB.selectUsuarios}" effect="fade"
+							var="selectUser">
+							<f:selectItem itemLabel="Seleccione un Usuario" />
+							<f:selectItems value="#{inventarioMB.listaUsuarios}"
+								var="listUser"
+								itemLabel="#{listUser.nombre} #{listUser.apellido}"
+								itemValue="#{listUser.userName}" />
+							<p:ajax partialSubmit="true" />
+						</h:selectOneMenu>
+
+					</p:panelGrid>
+					<p:commandButton value="Enviar"
+						action="#{inventarioMB.DetalleExpEnv}" update="@form" />
+						<p:commandButton action="#{inventarioMB.fullUpdate}" value="Cancelar" update="@form"/>	
+				</h:panelGroup>
+
+			</h:panelGrid>
+		</h:form>
+</h:body>
+</html>
+

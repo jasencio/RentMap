@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"> <!-- PrimeFaces -->
+<h:head></h:head> 
+
+<h:body>
+
+
+<p:growl id="messages" showDetail="true" sticky="true"></p:growl>
+
+<h:outputText value="Datos del cliente : " />
+
+<p:panelGrid id="pTipoCliente" >
+<p:row>
+	    <p:column>
+        <p:selectOneRadio id="console" value="#{facturacionMB.datosCliente}">
+            <f:selectItem itemLabel="Consumidor Final" itemValue="F" />
+            <f:selectItem itemLabel="Datos" itemValue="D" />
+            
+        <p:ajax event="change" listener="#{facturacionMB.tipoCliente}" 
+         update=":#{p:component('panelCliente')}" process=":#{p:component('pTipoCliente')}" partialSubmit="true" />
+            
+        </p:selectOneRadio>
+        </p:column>
+        </p:row>
+        
+             
+</p:panelGrid>        
+
+			<p:panelGrid id="panelCliente">
+			
+			
+				<p:row>
+					<p:column>
+						<p:outputLabel value="IDENTIFICACION" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{facturacionMB.cliente.identificacion}" disabled="#{facturacionMB.habilitarIdCliente}" />
+	<p:commandButton update=":#{p:component('panelCliente')} :#{p:component('messages')}" 
+	action="#{facturacionMB.buscarCliente}"  disabled="#{facturacionMB.habilitarIdCliente}"
+	icon="ui-icon-search" process=":#{p:component('panelCliente')}" partialSubmit="true" title="Buscar"/>
+  
+					</p:column>
+					<p:column>
+						<p:outputLabel value="NOMBRE" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{facturacionMB.cliente.nombre}" disabled="#{facturacionMB.habilitarCliente}" />
+					</p:column>
+					<p:column>
+						<p:outputLabel value="APELLIDO" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{facturacionMB.cliente.apellido}" disabled="#{facturacionMB.habilitarCliente}" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="DIRECCION" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{facturacionMB.cliente.direccion}" disabled="#{facturacionMB.habilitarCliente}" />
+					</p:column>
+					<p:column>
+						<p:outputLabel value="TELEFONO" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{facturacionMB.cliente.telefono}" disabled="#{facturacionMB.habilitarCliente}" />
+					</p:column>
+					<p:column>
+						<p:outputLabel value="MAIL" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{facturacionMB.cliente.mail}" disabled="#{facturacionMB.habilitarCliente}" />
+					</p:column>
+				</p:row>
+				
+		   </p:panelGrid>
+		   
+		   <br/>
+		   			<p:dataTable editable="true" id="detalleFacturaTable" var="detalle"
+					value="#{facturacionMB.detalleFacturaList}" rendered="true" rows="7"
+					 style="margin-bottom:20px"
+>
+
+					<f:facet name="header">Detalle Factura</f:facet>
+
+					<p:column headerText="Producto">
+								<h:outputLabel value="#{detalle.producto.nombre}" />
+					</p:column>
+
+					<p:column headerText="CANTIDAD">
+								<h:outputLabel value="#{detalle.cantidad}" style="width:100%"/>
+					</p:column>
+
+					<p:column headerText="PRECIO UNITARIO">
+								<h:outputLabel value="#{detalle.precioUnitario}" style="width:100%"/>
+					</p:column>
+						<p:column headerText="PRECIO TOTAL">
+								<h:outputLabel value="#{detalle.precioTotal}" style="width:100%"/>
+					</p:column>
+					
+					<p:column >
+						<p:commandButton update=":#{p:component('detalleFacturaTable')}" action="#{facturacionMB.eliminarDetalle}" icon="ui-icon-remove" title="Eliminar">
+	                <f:setPropertyActionListener value="#{detalle}" target="#{facturacionMB.selectedDetalleFac}" />
+            </p:commandButton>
+
+					</p:column>
+
+
+   <f:facet name="footer">
+   
+   <p:panelGrid id="panelGrabar">
+				<p:row>
+					<p:column>
+					
+           <p:outputLabel value="SUBTOTAL #{facturacionMB.factura.subtotal}$" style="color:blue"/>
+   </p:column>
+   				<p:column>
+   				<p:outputLabel value="IMPUESTOS #{facturacionMB.factura.impuestos}$" style="color:green" />
+   </p:column>
+   
+   				<p:column>
+   				
+           <p:outputLabel value="TOTAL #{facturacionMB.factura.total}$" style="color:red" />
+   </p:column>
+   <p:column>
+          <p:commandButton value="Grabar"
+        actionListener="#{facturacionMB.grabarFactura}"
+							update=":#{p:component('detalleFacturaTable')}"  
+							process=":#{p:component('panelCliente')} :#{p:component('detalleFacturaTable')}" partialSubmit="true" ></p:commandButton>
+   
+   </p:column>
+   </p:row>
+   </p:panelGrid>
+           
+ 
+           
+ 
+    </f:facet>
+
+				</p:dataTable>
+			
+			<p:panelGrid id="panelDetalle">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Producto" />
+					</p:column>
+					<p:column>  
+                    <p:autoComplete id="autoConproducto" multiple="false" value="#{facturacionMB.selectedProducto}" completeMethod="#{facturacionMB.completeProducto}"
+                        var="producto" itemLabel="#{producto.nombre}" itemValue="#{producto}" converter="productoConverter" >
+            <p:column>
+                <h:outputText value="#{producto.nombre}" />
+            </p:column>
+
+           <p:ajax event="itemSelect" listener="#{facturacionMB.onItemSelect}" update=":#{p:component('pDetallePrecioU')} 
+                                                                                       :#{p:component('pDetallePrecioT')} :#{p:component('pDetalleCantidad')}" /> 
+            
+              
+        </p:autoComplete>
+        
+
+						
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Cantidad" />
+					</p:column>
+					<p:column>
+						<p:inputText id="pDetalleCantidad" value="#{facturacionMB.detalleFactura.cantidad}">
+						    <p:ajax event="blur" 
+						    listener="#{facturacionMB.onChangeCantidad()}" 
+						    update=":#{p:component('pDetallePrecioT')}
+						             :#{p:component('pDetalleCantidad')}" process=":#{p:component('pDetalleCantidad')}" partialSubmit="true"/> 
+						</p:inputText>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Precio Unitario" />
+					</p:column>
+					<p:column>
+						<p:outputLabel id="pDetallePrecioU" value="#{facturacionMB.detalleFactura.precioUnitario}" />
+					</p:column>
+</p:row>
+<p:row>
+
+					<p:column>
+						<p:outputLabel value="Precio Total" />
+					</p:column>
+					<p:column>
+						<p:outputLabel id="pDetallePrecioT" value="#{facturacionMB.detalleFactura.precioTotal}" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Ingresar" actionListener="#{facturacionMB.guardarDetalle}"
+							update=":#{p:component('detalleFacturaTable')} :#{p:component('messages')} :#{p:component('panelDetalle')}"  process=":#{p:component('panelDetalle')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+			
+
+  
+			
+</h:body>
+</html>
+

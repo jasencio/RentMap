@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> <!-- PrimeFaces -->
+
+<h:head>
+<link href="${facesContext.externalContext.requestContextPath}/css/default.css" rel="stylesheet" type="text/css"/>
+<title>Pruebas </title>
+</h:head> 
+
+<h:body>
+<h:form>
+<p:dialog id="dlg" header="Ingreso al Sistema" widgetVar="dlg" modal="true" visible="true" closable="false" resizable="false">
+	<p:panelGrid columns="2">
+		<p:outputLabel value="Usuario"/>
+
+			<h:panelGroup>
+				<p:inputText value="#{loginMB.usuario}" id="txtUser"/>
+				<p:watermark for="txtUser" value="Ingrese su usuario" />
+
+			</h:panelGroup>
+		<p:outputLabel value="Clave"/>
+
+			<h:panelGroup>
+				<p:password value="#{loginMB.clave}" id="txtPass" validatorMessage="Ingrese clave.">
+				<f:validateLength minimum="4" for="pass" />
+				</p:password>
+				<p:watermark for="txtPass" value="Ingrese su clave" />
+			</h:panelGroup>
+
+		<p:commandButton value="Ingresar" action="#{loginMB.autenticar()}" update="@form" />
+		<p:commandButton value="Resetear" action="#{loginMB.reset()}" update="@form"/>
+	</p:panelGrid>
+ <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+	
+</p:dialog>
+
+
+</h:form>
+
+<center><p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server" /></center>
+
+</h:body> 
+</html>

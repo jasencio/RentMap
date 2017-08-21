@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions" >
+<!-- PrimeFaces -->
+<h:head></h:head>
+
+<h:body>
+		<p:tabView>
+			<p:tab title="Inserción de Expedientes">
+				<h:form>
+					<p:dataTable id="expedientesTable" var="exped"
+						value="#{insertarExpedMB.listaExpedientes}">
+						<f:facet name="header">Expedientes a Enviar</f:facet>
+						<p:column headerText="Judicatura" sortBy="">
+							<h:outputText value="#{exped.judicatura}" />
+						</p:column>
+						<p:column headerText="Año" sortBy="#{exped.anio}">
+							<h:outputText value="#{exped.anio}" />
+						</p:column>
+						<p:column headerText="Numero Expediente" sortBy="#{exped.numeroExpediente}">
+							<h:outputText value="#{exped.numeroExpediente}" />
+						</p:column>
+						<p:column headerText="Tipo" >
+							<h:outputText value="#{exped.requerimiento01}" />
+						</p:column>
+						<p:column headerText="Numero Cuerpos" >
+							<h:outputText value="#{exped.numeroCuerpos}" />
+						</p:column>
+						
+						<p:column headerText="Observación" >
+							<h:outputText value="#{exped.requerimiento02}" />
+						</p:column>
+						<p:column headerText="idJuez" >
+							<h:outputText value="#{exped.idJuzgado}" />
+						</p:column>
+						<p:column headerText="Juez" >
+							<h:outputText value="#{exped.juzgado}" />
+						</p:column>
+						<p:column headerText="Sector" >
+							<h:outputText value="#{exped.sector}" />
+						</p:column>
+						<p:column headerText="Estanteria">
+							<h:outputText value="#{exped.estanteria}" />
+						</p:column>
+						<p:column headerText="Bandeja" >
+							<h:outputText value="#{exped.bandeja}" />
+						</p:column>
+						<p:column headerText="Caja" >
+							<h:outputText value="#{exped.caja}" />
+						</p:column>
+						
+						
+					
+									
+					</p:dataTable>
+
+			<br/>
+			<h:panelGrid columns="2">							
+				<p:fileUpload fileUploadListener="#{insertarExpedMB.cargarArchivo}" mode="advanced" dragDropSupport="false"
+         		cancelLabel="Cancelar" uploadLabel="Subir" label="Buscar" update="@form" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/" />
+				<p:commandButton value="Insertar" action="#{insertarExpedMB.insertArchivos}" update="@form" />		
+			</h:panelGrid>				
+
+				</h:form>
+			</p:tab>
+			
+			<p:tab title="Modificar Expediente">
+			<h:form>
+			<h:panelGrid columns="2">
+			<p:outputLabel value="Judicatura"/><p:inputText value="#{modificarExpedMB.expediente.judicatura}" id="param1"><p:watermark for="param1" value="Parametro de Busqueda"  /> <pe:keyFilter regEx="/[0-9]/i"/>  <p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Anio"/><p:inputText value="#{modificarExpedMB.expediente.anio}" id="param2"><p:watermark for="param2" value="Parametro de Busqueda"  /><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Numero Expediente" /><p:inputText value="#{modificarExpedMB.expediente.numeroExpediente}" id="param3"><p:watermark for="param3" value="Parametro de Busqueda"  /><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>							
+			<p:outputLabel value="Tipo"/><p:inputText value="#{modificarExpedMB.expediente.requerimiento01}"><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Numero Cuerpos"/><p:inputText value="#{modificarExpedMB.expediente.numeroCuerpos}"><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Observaciones"/><p:inputText value="#{modificarExpedMB.expediente.requerimiento02}"><p:ajax event="blur" partialSubmit="true" /></p:inputText>			
+			<p:outputLabel value="Id Juzgado"/><p:inputText value="#{modificarExpedMB.expediente.idJuzgado}"><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Juzgado"/><p:inputText value="#{modificarExpedMB.expediente.juzgado}"><pe:keyFilter regEx="/[A-Z]/g"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Sector" /><p:inputText value="#{modificarExpedMB.expediente.sector}"><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Bandeja"/><p:inputText value="#{modificarExpedMB.expediente.bandeja}"><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Caja"/><p:inputText value="#{modificarExpedMB.expediente.caja}"><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			<p:outputLabel value="Estanteria"/><p:inputText value="#{modificarExpedMB.expediente.estanteria}"><pe:keyFilter regEx="/[0-9]/i"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>
+			
+			<p:outputLabel value="Estado" /><p:inputText value="#{modificarExpedMB.expediente.estado}"><pe:keyFilter regEx="/[AI]/g"/><p:ajax event="blur" partialSubmit="true" /></p:inputText>							
+			
+			</h:panelGrid>
+			<br/>
+			<p:commandButton value="Buscar" action="#{modificarExpedMB.buscarExp}" update="@form"/>	
+						
+			<p:commandButton value="Modificar" action="#{modificarExpedMB.modificarExpediente}" update="@form"/>						
+			
+			<p:commandButton value="Cancelar" action="#{modificarExpedMB.fullUpdate}" update="@form"/>
+			</h:form>
+			</p:tab>
+			
+		</p:tabView>
+</h:body>
+</html>
+

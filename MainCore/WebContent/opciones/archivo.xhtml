@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- PrimeFaces -->
+<h:head></h:head>
+
+<h:body>
+		<h:form id="formArchivo">
+
+			<p:growl id="messages" showDetail="true"
+				sticky="true"></p:growl>
+
+			<p:outputLabel>
+				<h1>Envio</h1>
+			</p:outputLabel>
+
+
+			<table style="width: 100%; height: 100%;">
+				<tr>
+					<td colspan="2" align="center"><p:contextMenu
+							for="expedientesTable">
+							<p:menuitem value="Eliminar"
+								actionListener="#{archivoMB.eliminarExpediente()}"
+								update=":formArchivo:messages,:formArchivo:expedientesTable" />
+						</p:contextMenu> <p:dataTable id="expedientesTable" var="exped"
+							value="#{archivoMB.listaExpedientes}"
+							style="width:80%;height:100%"
+							selection="#{archivoMB.selectExpedientes}" selectionMode="single"
+							rowKey="#{exped.numeroExpediente}" rows="10" paginator="true"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" paginatorPosition="top">
+							<f:facet name="header">Expedientes a Enviar</f:facet>
+							<p:column headerText="Judicatura">
+								<h:outputText value="#{exped.judicatura}" />
+							</p:column>
+							<p:column headerText="Año">
+								<h:outputText value="#{exped.anio}" />
+							</p:column>
+							<p:column headerText="Numero Expediente">
+								<h:outputText value="#{exped.numeroExpediente}" />
+							</p:column>
+							<p:column headerText="Tipo">
+								<h:outputText value="#{exped.requerimiento01}" />
+							</p:column>
+							<p:column headerText="Numero Cuerpos">
+								<h:outputText value="#{exped.numeroCuerpos}" />
+							</p:column>
+							<p:column headerText="Observacion">
+								<h:outputText value="#{exped.requerimiento02}" />
+							</p:column>
+						</p:dataTable></td>
+				</tr>
+
+
+
+				<tr>
+					<td colspan="2" align="center"><h:panelGrid columns="3">
+							<p:button value="Insertar Archivo" onclick="PF('dlg2').show()"
+								href="javascript:void(0)" />
+							<p:commandButton value="Enviar Expediente"
+								action="#{archivoMB.enviarExpedientes}" update="@form">
+								<f:setPropertyActionListener target="#{archivoMB.remitenteUser}"
+									value="${loginMB.usuario}" />
+							</p:commandButton>
+							<p:commandButton action="#{archivoMB.fullUpdate}"
+								value="Cancelar" update="@form" />
+						</h:panelGrid></td>
+				</tr>
+				<tr>
+					<td align="center"><p:panelGrid id="pnlEnvio" columns="2">
+
+							<f:facet name="header">Destinatario</f:facet>
+							<p:outputLabel value="Cargo" />
+							<h:selectOneMenu id="cmbRoles" value="#{archivoMB.selectRoles}"
+								disabled="#{archivoMB.blockCargo}" effect="fade" var="selectRol">
+								<f:selectItem itemLabel="Seleccione un Cargo" />
+								<f:selectItems value="#{archivoMB.listaRoles}" var="listRol"
+									itemLabel="#{listRol.descripcion}" itemValue="#{listRol.idRol}" />
+								<p:ajax update=":formArchivo:cmbUsuarios,:formArchivo:cmbRoles"
+									partialSubmit="true" listener="#{archivoMB.ListaUsuarios}" />
+							</h:selectOneMenu>
+
+
+
+							<p:outputLabel value="Destinatario" />
+							<h:selectOneMenu id="cmbUsuarios"
+								value="#{archivoMB.selectUsuarios}" effect="fade"
+								var="selectUser">
+								<f:selectItem itemLabel="Seleccione un Usuario" />
+								<f:selectItems value="#{archivoMB.listaUsuarios}" var="listUser"
+									itemLabel="#{listUser.nombre} #{listUser.apellido}"
+									itemValue="#{listUser.userName}" />
+								<p:ajax partialSubmit="true" />
+							</h:selectOneMenu>
+						</p:panelGrid></td>
+
+					<td align="center"><p:fileUpload
+							fileUploadListener="#{archivoMB.cargarArchivo}" mode="advanced"
+							dragDropSupport="false" cancelLabel="Cancelar"
+							uploadLabel="Subir" label="Buscar"
+							update=":formArchivo:expedientesTable" sizeLimit="100000"
+							allowTypes="/(\.|\/)(csv)$/" style="width: 400px;" /></td>
+
+				</tr>
+
+
+			</table>
+
+
+		<p:dialog appendTo="@(body)" id="dlg2" widgetVar="dlg2" modal="true"
+			header="Agregar Expediente" resizable="false"
+			position="center center" showEffect="clip" width="40%" rows="10"
+			paginator="true"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" paginatorPosition="top">
+
+
+			<p:panelGrid id="panelDatosInsert">
+			<p:row>
+<p:column>
+				<p:outputLabel value="Judicatura" />
+</p:column>
+<p:column>
+				<p:inputText value="#{archivoMB.selectJudicatura}">
+					<pe:keyFilter regEx="/[0-9]/i" />
+					<p:ajax partialSubmit="true" />
+				</p:inputText>
+</p:column>
+<p:column rowspan="4">
+							<p:commandButton value="Buscar"
+				actionListener="#{archivoMB.insertarExpediente}" process="@this"
+				update=":#{p:component('expedientesTable')}
+						:#{p:component('panelDatosInsert')}
+						:#{p:component('messages2')}
+						:#{p:component('expInsertTable')}">
+
+			</p:commandButton>
+</p:column>				
+</p:row>
+<p:row>
+<p:column>
+				<p:outputLabel value="Año" />
+</p:column>
+<p:column>
+				<p:inputText value="#{archivoMB.selectAnio}">
+					<pe:keyFilter regEx="/[0-9]/i" />
+					<p:ajax partialSubmit="true" />
+				</p:inputText>
+</p:column>
+</p:row>
+<p:row>
+<p:column>
+				<p:outputLabel value="Numero Expediente" />
+</p:column>
+<p:column>				<p:inputText id="selectExp" value="#{archivoMB.selectExpediente}">
+					<pe:keyFilter regEx="/[0-9]/i" />
+					<p:ajax partialSubmit="true"></p:ajax>
+				</p:inputText>
+
+</p:column>
+</p:row>
+
+<p:row>				
+<p:column>
+				<p:outputLabel value="Tipo" />
+</p:column>
+<p:column>
+				<p:inputText id="selectReq" value="#{archivoMB.requerimiento01}">
+					<p:ajax partialSubmit="true"></p:ajax>
+				</p:inputText>			
+</p:column>
+</p:row>
+
+			</p:panelGrid>
+
+<br/>
+
+<p:dataTable id="expInsertTable" var="expedIns"
+							value="#{archivoMB.listaExpInsert}"
+							style="width:100%;height:100%">
+							<p:column style="text-align:left">
+	           			<f:facet name="header">
+	           				<p:selectBooleanCheckbox value="#{archivoMB.allSelected}"  >
+		       					<p:ajax listener="#{archivoMB.Select}" 
+		       							process=":#{p:component('expInsertTable')}" 
+		       							update=":#{p:component('expInsertTable')}"  
+		       							partialSubmit="true"/>
+	           				</p:selectBooleanCheckbox>
+	           			</f:facet>
+	           			<p:selectBooleanCheckbox value="#{expedIns.selected}" >
+	       						<p:ajax listener="#{archivoMB.OneSelect}" 
+		       							process=":#{p:component('expInsertTable')}" 
+		       							update=":#{p:component('expInsertTable')}"  
+		       							partialSubmit="true"/>	
+		       			</p:selectBooleanCheckbox>  
+	           		</p:column>
+							<p:column headerText="Judicatura">
+								<h:outputText value="#{expedIns.judicatura}" />
+							</p:column>
+							<p:column headerText="Año">
+								<h:outputText value="#{expedIns.anio}" />
+							</p:column>
+							<p:column headerText="Numero Expediente">
+								<h:outputText value="#{expedIns.numeroExpediente}" />
+							</p:column>
+							<p:column headerText="Tipo">
+								<h:outputText value="#{expedIns.requerimiento01}" />
+							</p:column>
+							<p:column headerText="Numero Cuerpos">
+								<h:outputText value="#{expedIns.numeroCuerpos}" />
+							</p:column>
+							<p:column headerText="Observacion">
+								<h:outputText value="#{expedIns.requerimiento02}" />
+							</p:column>
+<f:facet name="footer">
+<p:commandButton value="Agregar"
+				actionListener="#{archivoMB.insertarExpedienteFinal}" process=":#{p:component('expInsertTable')}"
+				update=":#{p:component('expedientesTable')}
+						:#{p:component('panelDatosInsert')}
+						:#{p:component('messages2')}
+						:#{p:component('expInsertTable')}"/>
+</f:facet>
+						</p:dataTable>
+
+
+			<p:messages id="messages2" showDetail="true" closable="true" />
+
+
+
+
+
+		</p:dialog>
+
+
+
+
+
+
+
+
+
+	</h:form>
+</h:body>
+</html>
+

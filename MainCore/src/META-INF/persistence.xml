@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="MainCore" transaction-type="JTA">
+
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/hydraDS</jta-data-source>
+		<class>com.dragonfly.entities.Area</class>
+		<class>com.dragonfly.entities.Rol</class>
+		<class>com.dragonfly.entities.Opcion</class>
+		<class>com.dragonfly.entities.Usuario</class>
+		<properties>
+		
+<!-- 		<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="create"/> create update 
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="true" /> 
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/> 
+			<property name="hibernate.jdbc.batch_size" value="0"/> -->
+
+ 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" /> 
+
+		</properties>
+	</persistence-unit>
+</persistence>
+
+

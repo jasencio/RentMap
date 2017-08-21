@@ -1,0 +1,768 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- PrimeFaces -->
+<h:head></h:head>
+
+<h:body>	<h:form>
+			<p:growl id="messages" showDetail="true"
+				sticky="true"></p:growl>
+	<p:tabView>
+		<p:tab title="Usuarios">
+		
+
+				<p:dataTable editable="true" id="userTable" var="user"
+					value="#{admTablesMB.listaUsuarios}" rendered="true" rows="7"
+					paginator="true" style="margin-bottom:20px"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="top">
+
+					<f:facet name="header">Administración de Usuarios</f:facet>
+
+					<p:ajax event="rowEdit" listener="#{admTablesMB.onRowEditUser}"
+						update=":#{p:component('userTable')}" process=":#{p:component('userTable')}" partialSubmit="true" />
+
+					<p:column headerText="idUsuario">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.idUsuario}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.idUsuario}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="nombre">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.nombre}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.nombre}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+
+					</p:column>
+
+					<p:column headerText="apellido">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.apellido}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.apellido}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="idJuzgado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.idJuzgado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.idJuzgado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="idRol">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.idRol}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.idRol}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="userName">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.userName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.userName}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="userPass">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.userPass}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.userPass}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="estado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{user.estado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{user.estado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column >
+						<p:rowEditor />
+					</p:column>
+
+
+
+				</p:dataTable>
+				<!-- HEREEEEEE -->
+			<p:commandButton value="Ingreso de Usuarios" type="button" onclick="PF('dlgUsersW').show();" />
+		</p:tab>
+		<p:tab title="Roles">
+		<p:dataTable editable="true" id="rolesTable" var="rol"
+					value="#{admTablesMB.listaRoles}" rendered="true" rows="7"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="top">
+
+					<f:facet name="header">Administración de Roles</f:facet>
+
+				<p:ajax event="rowEdit" listener="#{admTablesMB.onRowEditRoles}"
+						update=":#{p:component('rolesTable')}" process=":#{p:component('rolesTable')}" partialSubmit="true" />
+
+					<p:column headerText="idRol">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{rol.idRol}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{rol.idRol}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="descripcion">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{rol.descripcion}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{rol.descripcion}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+
+					</p:column>
+
+					<p:column headerText="estado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{rol.estado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{rol.estado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="tipoRol">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{rol.tipoRol}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{rol.tipoRol}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					
+					<p:column >
+						<p:rowEditor />
+					</p:column>
+
+
+
+				</p:dataTable>
+				<!-- HEREEEEEE -->
+			<p:commandButton value="Ingreso de Roles" type="button" onclick="PF('dlgRolesW').show();" />
+
+		</p:tab>
+		
+		<p:tab title="juzgado">
+		<p:dataTable editable="true" id="juzgadoTable" var="juzgado"
+					value="#{admTablesMB.listaJuzgados}" rendered="true" rows="7"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="top">
+
+					<f:facet name="header">Administración de Juzgados</f:facet>
+
+				<p:ajax event="rowEdit" listener="#{admTablesMB.onRowEditJuzgado}"
+						update=":#{p:component('juzgadoTable')}" process=":#{p:component('juzgadoTable')}" partialSubmit="true" />
+
+					<p:column headerText="idJuzgado">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{juzgado.idJuzgado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{juzgado.idJuzgado}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="nombreJuzgado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{juzgado.nombreJuzgado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{juzgado.nombreJuzgado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+
+					</p:column>
+
+					<p:column headerText="descripJuzgado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{juzgado.descripJuzgado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{juzgado.descripJuzgado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="estado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{juzgado.estado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{juzgado.estado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					
+					<p:column >
+						<p:rowEditor />
+					</p:column>
+
+
+
+				</p:dataTable>
+				<!-- HEREEEEEE -->
+			<p:commandButton value="Ingreso de Juzgados" type="button" onclick="PF('dlgJuzgadosW').show();" />
+			
+			
+		</p:tab>
+		
+				<p:tab title="User Exp. Box">
+		<p:dataTable editable="true" id="usersExpBoxTable" var="usersExpBox"
+					value="#{admTablesMB.listaUsersExpBoxs}" rendered="true" rows="7"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="top">
+
+					<f:facet name="header">Administración de Bandeja de Usuarios</f:facet>
+
+				<p:ajax event="rowEdit" listener="#{admTablesMB.onRowEditUsersExpBox}"
+						update=":#{p:component('usersExpBoxTable')}" process=":#{p:component('usersExpBoxTable')}" partialSubmit="true" />
+
+
+
+					<p:column headerText="idExpBox">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{usersExpBox.idExpBox}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usersExpBox.idExpBox}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+
+					</p:column>
+
+					<p:column headerText="idUser">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{usersExpBox.idUser}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usersExpBox.idUser}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="idJuzgado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{usersExpBox.idJuzgado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usersExpBox.idJuzgado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					<p:column headerText="descripcion">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{usersExpBox.descripcion}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usersExpBox.descripcion}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					<p:column headerText="estado">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{usersExpBox.estado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usersExpBox.estado}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					
+					<p:column >
+						<p:rowEditor />
+					</p:column>
+
+
+
+				</p:dataTable>
+				<!-- HEREEEEEE -->
+			<p:commandButton value="Ingreso de Bandejas de Usuarios" type="button" onclick="PF('dlgUsersExpBoxsW').show();" />
+
+		</p:tab>
+		
+						<p:tab title="Menus">
+		<p:dataTable editable="true" id="menuTable" var="menu"
+					value="#{admTablesMB.listaMenu}" rendered="true" rows="7"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="top">
+
+					<f:facet name="header">Administración de Menu</f:facet>
+
+				<p:ajax event="rowEdit" listener="#{admTablesMB.onRowEditMenus}"
+						update=":#{p:component('menuTable')}" process=":#{p:component('menuTable')}" partialSubmit="true" />
+
+					<p:column headerText="id">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{menu.id}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{menu.id}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="idPadre">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{menu.idPadre}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{menu.idPadre}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+
+					</p:column>
+
+					<p:column headerText="idRol">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{menu.idRol}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{menu.idRol}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="descripcion">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{menu.descripcion}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{menu.descripcion}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					<p:column headerText="orden">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{menu.orden}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{menu.orden}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					<p:column headerText="url">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{menu.url}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{menu.url}" style="width:100%"/>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					
+					
+					<p:column >
+						<p:rowEditor />
+					</p:column>
+
+
+
+				</p:dataTable>
+
+	<!-- HEREEEEEE -->
+	<p:commandButton value="Ingreso de Menus" type="button" onclick="PF('dlgMenuW').show();" />
+			
+		</p:tab>
+		
+
+
+	</p:tabView>
+	
+	
+				<p:dialog id="dlgUsers" 
+						  widgetVar="dlgUsersW" appendTo="@(body)"
+						  resizable="false" modal="true"
+						  header="Ingreso Usuario">
+
+			<p:panelGrid id="panelUser">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Nombre" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.nombre}"  />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Apellido" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.apellido}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Juzgado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.idJuzgado}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Rol" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.idRol}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="UserName" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.userName}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="UserPass" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.userPass}"  />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Estado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usuario.estado}"  />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{admTablesMB.guardarUsuario}"
+							oncomplete="PF('dlgUsersW').hide();"  
+							update=":#{p:component('userTable')} :#{p:component('messages')} :#{p:component('panelUser')}"  process=":#{p:component('panelUser')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</p:dialog>
+
+
+				<p:dialog id="dlgRoles" 
+						  widgetVar="dlgRolesW" appendTo="@(body)"
+						  resizable="false" modal="true"
+						  header="Ingreso Roles">
+
+			<p:panelGrid id="panelRoles">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Descripcion" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.rol.descripcion}"  />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Estado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.rol.estado}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Tipo Rol" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.rol.tipoRol}"  />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{admTablesMB.guardarRol}"
+							oncomplete="PF('dlgRolesW').hide();"  
+							update=":#{p:component('rolesTable')} :#{p:component('messages')} :#{p:component('panelRoles')}"  process=":#{p:component('panelRoles')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</p:dialog>
+						<p:dialog id="dlgJuzgados" 
+						  widgetVar="dlgJuzgadosW" appendTo="@(body)"
+						  resizable="false" modal="true"
+						  header="Ingreso Juzgado">
+
+			<p:panelGrid id="panelJuzgado">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Nombre Juzgado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.juzgado.nombreJuzgado}"  />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Descripcion" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.juzgado.descripJuzgado}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Estado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.juzgado.estado}"  />
+					</p:column>
+				</p:row>
+				
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{admTablesMB.guardarJuzgado}"
+							oncomplete="PF('dlgJuzgadosW').hide();"  
+							update=":#{p:component('juzgadoTable')} :#{p:component('messages')} :#{p:component('panelJuzgado')}"  process=":#{p:component('panelJuzgado')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</p:dialog>
+						<p:dialog id="dlgUsersExpBoxs" 
+						  widgetVar="dlgUsersExpBoxsW" appendTo="@(body)"
+						  resizable="false" modal="true"
+						  header="Ingreso Bandeja de Usuario">
+
+			<p:panelGrid id="panelUsersExpBox">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Id Juzgado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usersExpBox.idJuzgado}"  />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Id User" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usersExpBox.idUser}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Descripcion" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usersExpBox.descripcion}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Estado" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.usersExpBox.estado}" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{admTablesMB.guardarUsersExpBox}"
+							oncomplete="PF('dlgUsersExpBoxsW').hide();"  
+							update=":#{p:component('usersExpBoxTable')} :#{p:component('messages')} :#{p:component('panelUsersExpBox')}"  process=":#{p:component('panelUsersExpBox')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</p:dialog>
+		
+						<p:dialog id="dlgMenus" 
+						  widgetVar="dlgMenuW" appendTo="@(body)"
+						  resizable="false" modal="true"
+						  header="Ingreso Menu">
+
+			<p:panelGrid id="panelMenu">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="idPadre" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.menu.idPadre}"  />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel value="idRol" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.menu.idRol}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Descripcion" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.menu.descripcion}"  />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="orden" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.menu.orden}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="url" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{admTablesMB.menu.url}"  />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{admTablesMB.guardarMenu}"
+							oncomplete="dlgMenuW.hide();"  
+							update=":#{p:component('menuTable')} :#{p:component('messages')} :#{p:component('panelMenu')}"  process=":#{p:component('panelMenu')}" partialSubmit="true" />
+						<p:commandButton value="Cancelar"></p:commandButton>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+		</p:dialog>
+
+	
+
+	</h:form>
+	
+	
+	
+
+</h:body>
+</html>
+

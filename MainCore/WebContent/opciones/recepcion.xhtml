@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<!-- PrimeFaces -->
+<h:head></h:head>
+
+<h:body>
+		<h:form id="formRecepcion">
+
+			<p:growl id="messages" showDetail="true" sticky="true"></p:growl>
+
+			<p:outputLabel>
+				<h1>Recepción</h1>
+			</p:outputLabel>
+
+			<p:dataTable id="expedientesTable" var="expedBox"
+				value="#{recepcionMB.expBoxList}" widgetVar="expTableW"
+				rowKey="#{expedBox.numExpediente}" rows="10" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" paginatorPosition="top"
+				filteredValue="#{recepcionMB.filteredExpBox}">
+				<f:facet name="header">Expedientes por procesar</f:facet>
+				
+				<p:column width="3%" style="text-align:left">
+	           			<f:facet name="header">
+	           				<p:selectBooleanCheckbox value="#{recepcionMB.allSelected}" style="width:4px; heigh:4px;" >
+		       					<p:ajax listener="#{recepcionMB.Select}" 
+		       							process=":#{p:component('expedientesTable')}" 
+		       							update=":#{p:component('expedientesTable')}"  
+		       							partialSubmit="true"/>
+	           				</p:selectBooleanCheckbox>
+	           			</f:facet>
+	           			<p:selectBooleanCheckbox value="#{expedBox.selected}" style="width:4px; heigh:4px;" >
+	       						<p:ajax listener="#{recepcionMB.OneSelect}" 
+		       							process=":#{p:component('expedientesTable')}" 
+		       							update=":#{p:component('expedientesTable')}"  
+		       							partialSubmit="true"/>	
+		       			</p:selectBooleanCheckbox>  
+	           		</p:column>
+				
+
+				<p:column style="width:7%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Judicatura" />
+					</f:facet>
+					<p:outputLabel value="#{expedBox.judicatura}" />
+				</p:column>
+				<p:column style="width:7%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Año" />
+					</f:facet>
+					<p:outputLabel value="#{expedBox.anio}" />
+				</p:column>
+				<p:column filterBy="#{expedBox.numExpediente}"
+					filterMatchMode="contains" style="width:7%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Numero Expediente" />
+					</f:facet>
+					<p:outputLabel value="#{expedBox.numExpediente}" />
+				</p:column>
+				
+				<p:column  style="width:10%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Tipo" />
+					</f:facet>
+					<h:outputLabel value="#{expedBox.requerimiento01}" />
+				</p:column>
+				
+				<p:column style="width:5%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Numero Cuerpos" />
+					</f:facet>
+					<p:outputLabel value="#{expedBox.numeroCuerpos}" />
+				</p:column>
+				<p:column  style="width:10%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Observacion" />
+					</f:facet>
+					<h:outputLabel value="#{expedBox.requerimiento02}" />
+				</p:column>
+				<p:column filterBy="#{expedBox.remitente}"
+					filterMatchMode="contains" style="width:25%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Remitente" />
+					</f:facet>
+					<p:outputLabel value="#{expedBox.remitente}" />
+				</p:column>
+				
+				<p:column style="width:25%;text-align:center" >
+					<f:facet name="header">
+						<p:outputLabel value="Fecha Envio" />
+					</f:facet>
+					<p:outputLabel value="#{expedBox.fechaEnvio}" >
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="EST" /></p:outputLabel>
+				</p:column>
+			</p:dataTable>
+			<br />
+			<p:commandButton value="ACEPTAR"
+				action="#{recepcionMB.AceptarExpedientes}" update="@form" />
+			<p:commandButton value="RECHAZAR"
+				action="#{recepcionMB.RechazarExpedientes}" update="@form" />
+
+		</h:form>
+</h:body>
+</html>
+

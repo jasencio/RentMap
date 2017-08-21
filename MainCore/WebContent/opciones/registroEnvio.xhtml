@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> <!-- PrimeFaces -->
+<h:head></h:head> 
+
+<h:body>
+<h:form id="formRecepcion">
+
+<p:growl id="messages" showDetail="true" life="2000"></p:growl>
+
+<p:outputLabel><h1>Registro</h1></p:outputLabel>
+
+
+<p:contextMenu for="enviosTable">
+        <p:menuitem value="View" update="expedientesTable" icon="ui-icon-search" oncomplete="PF('dlgExp').show()" actionListener="#{registroEnvioMB.DetalleExpEnv}"/>     
+</p:contextMenu>
+
+
+<p:dataTable  id="enviosTable" var="regEnv" value="#{registroEnvioMB.envList}" rowKey="#{regEnv.idEnvExp}"
+                 selection="#{registroEnvioMB.selectEnvExp}" selectionMode="single" rows="10" paginator="true"
+paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+rowsPerPageTemplate="5,10,15" paginatorPosition="top" style="width:80%;height:60%" >
+<f:facet name="header">Expedientes Enviados</f:facet>	
+<p:column style="width:25%;text-align:center">	 
+	 <f:facet name="header">
+                <h:outputText value="Fecha Envio" />
+     </f:facet>
+	
+	<h:outputText value="#{regEnv.horaEnvio}" > <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" /></h:outputText>		
+</p:column>
+<p:column style="width:25%;text-align:center">
+	<f:facet name="header">
+                <h:outputText value="Destinatario" />
+     </f:facet>
+	<h:outputText value="#{regEnv.destinatario}" />
+</p:column>
+<p:column style="width:16%;text-align:center">
+     <f:facet name="header">
+                <h:outputText value="Estado Mensaje" />
+     </f:facet>
+     <h:outputText value="#{regEnv.estado eq 'F'?'Enviado':'Pendiente'}" />
+</p:column>
+<p:column style="width:25%;text-align:center">
+     <f:facet name="header">
+                <h:outputText value="Fecha recepción" />
+     </f:facet>
+	
+     <h:outputText value="#{regEnv.horaRecepcion}">    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" /></h:outputText>
+</p:column>
+
+	 <f:facet name="footer">
+	 <h:commandLink>
+	 		<p:commandButton value="Exportar"></p:commandButton>
+          <p:dataExporter type="xls" target="enviosTable" fileName="TablaEnvios" />
+     </h:commandLink>
+     </f:facet> 
+ </p:dataTable> 
+
+
+<p:dialog appendTo="@(body)"  modal="true" id="dlg" widgetVar="dlgExp" width="60%" height="40%" 
+ resizable="false">
+
+
+<p:dataTable  id="expedientesTable" var="regExpEnv" value="#{registroEnvioMB.expEnvList}" 
+rows="10" paginator="true"
+paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+rowsPerPageTemplate="5,10,15" paginatorPosition="top"
+ style="width:100%;height:100%" >
+<f:facet name="header">Expedientes Enviados</f:facet>	
+
+<p:column >	 
+	<f:facet name="header">
+                <h:outputText value="Judicatura" />
+    </f:facet>
+	<h:outputText value="#{regExpEnv.judicatura}" />		
+</p:column>
+
+
+<p:column>
+	<f:facet name="header">
+                <h:outputText value="Año" />
+    </f:facet>
+	
+	<h:outputText value="#{regExpEnv.anio}" />
+</p:column>
+<p:column >	 
+	<f:facet name="header">
+                <h:outputText value="Numero Expediente" />
+    </f:facet>
+	<h:outputText value="#{regExpEnv.numeroExpediente}" />		
+</p:column>
+
+<p:column >	 
+	<f:facet name="header">
+                <h:outputText value="Tipo" />
+    </f:facet>
+	<h:outputText value="#{regExpEnv.requerimiento01}" />		
+</p:column>
+
+<p:column>
+    <f:facet name="header">
+                <h:outputText value="Numero Cuerpos" />
+    </f:facet>
+    
+     <h:outputText value="#{regExpEnv.numeroCuerpos}" />
+</p:column>
+
+<p:column >	 
+	<f:facet name="header">
+                <h:outputText value="Observacion" />
+    </f:facet>
+	<h:outputText value="#{regExpEnv.requerimiento02}" />		
+</p:column>
+
+					<f:facet name="footer">
+						<h:commandLink>
+							<p:commandButton value="Exportar"></p:commandButton>
+							<p:dataExporter type="xls" target="expedientesTable"
+								fileName="TablaDetallesEnvios" />
+						</h:commandLink>
+					</f:facet>
+
+				</p:dataTable> 
+</p:dialog>
+
+
+</h:form>
+</h:body>
+</html>
+

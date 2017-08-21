@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> <!-- PrimeFaces -->
+<h:head></h:head> 
+
+<h:body>
+<h1>Configuración de Cuenta</h1>
+
+<p:tabView>
+			<p:tab title="Cambio Contraseña">
+				<h:form>
+				<p:growl id="messages" showDetail="true" sticky="true"></p:growl>
+				
+				<h:panelGrid columns="2">
+				
+				<p:outputLabel value="Antigua Contraseña" />
+				<h:panelGrid>
+				<p:password id="passOld" value="#{configuracionesMB.oldPass}"/>
+				<p:watermark for="passOld" value="Antigua Contraseña" />
+				</h:panelGrid>
+				<p:outputLabel value="Nueva Contraseña" />
+				<h:panelGrid>
+				<p:password id="newPass" value="#{configuracionesMB.newPass}"/>
+				<p:watermark for="newPass" value="Nueva Contraseña." />
+				</h:panelGrid>
+				<p:outputLabel value="Nueva Contraseña" />
+				<h:panelGrid>
+				<p:password id="newPass2" value="#{configuracionesMB.newPass2}"/>
+				<p:watermark for="newPass2" value="Nueva Contraseña" />
+				</h:panelGrid>
+
+					<f:facet name="footer">
+						<p:commandButton value="Cambiar"
+							action="#{configuracionesMB.ChangePass}" update="@form"
+							onstart="PF('blockUIWidget').block();"
+							onerror="PF('blockUIWidget').unblock();"
+							oncomplete="PF('blockUIWidget').unblock();" />
+					</f:facet>
+				</h:panelGrid>
+				
+				</h:form>
+</p:tab>
+</p:tabView>		
+</h:body>
+</html>
+
